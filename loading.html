@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading... | Audio Collections</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .loading-content {
+            max-width: 500px;
+        }
+        
+        .spinner-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+        }
+        
+        .spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid #4cc9f0;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .spinner-inner {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 3px solid #f72585;
+            border-radius: 50%;
+            animation: spin-reverse 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes spin-reverse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .progress-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .memory-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-align: left;
+        }
+        
+        @media (max-width: 600px) {
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .memory-info {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="logo">
+        <i class="fas fa-headphones"></i>
+        <h1>Audio Collections</h1>
+    </div>
+    
+    <div class="loading-content">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+            <div class="spinner-inner"></div>
+        </div>
+        
+        <h2 id="loadingMessage">Loading Audio Collection</h2>
+        <p id="loadingDetail">Preparing memory-optimized audio players...</p>
+        
+        <div class="progress-text">
+            <span id="progressCounter">3</span> seconds remaining
+        </div>
+    </div>
+    
+    <div class="memory-info" id="memoryInfo">
+        <i class="fas fa-memory"></i> Memory optimization active
+    </div>
+
+    <script>
+        // Loading screen logic
+        const messages = [
+            "Loading Audio Collection",
+            "Initializing Audio Players",
+            "Optimizing Memory Usage",
+            "Preparing User Interface",
+            "Almost Ready"
+        ];
+        
+        const details = [
+            "Preparing memory-optimized audio players...",
+            "Setting up playback controls...",
+            "Loading audio metadata...",
+            "Applying memory management settings...",
+            "Finalizing page setup..."
+        ];
+        
+        let messageIndex = 0;
+        let counter = 5;
+        
+        const loadingMessage = document.getElementById('loadingMessage');
+        const loadingDetail = document.getElementById('loadingDetail');
+        const progressCounter = document.getElementById('progressCounter');
+        const memoryInfo = document.getElementById('memoryInfo');
+        
+        // Cycle through loading messages
+        setInterval(() => {
+            messageIndex = (messageIndex + 1) % messages.length;
+            loadingMessage.textContent = messages[messageIndex];
+            loadingDetail.textContent = details[messageIndex];
+        }, 2000);
+        
+        // Countdown timer
+        const countdown = setInterval(() => {
+            counter--;
+            progressCounter.textContent = counter;
+            
+            if (counter <= 0) {
+                clearInterval(countdown);
+                // Redirect to home page if stuck on loading screen
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        }, 1000);
+        
+        // Check if we should redirect (if coming from another page)
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectTo = urlParams.get('redirect');
+        
+        if (redirectTo) {
+            // Redirect after a short delay to show loading screen
+            setTimeout(() => {
+                window.location.href = redirectTo;
+            }, 1500);
+        } else {
+            // Default redirect to home
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 5000);
+        }
+        
+        // Check memory API if available
+        if (performance && performance.memory) {
+            const usedMB = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
+            const totalMB = Math.round(performance.memory.totalJSHeapSize / 1024 / 1024);
+            memoryInfo.innerHTML = `<i class="fas fa-memory"></i> Memory: ${usedMB}MB / ${totalMB}MB`;
+        }
+    </script>
+</body>
+</html>

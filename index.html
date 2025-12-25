@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Collections - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-headphones"></i>
+                <h1>Audio Collections</h1>
+            </div>
+            <p class="subtitle">Memory-optimized audio player system</p>
+        </header>
+
+        <main class="collection-grid">
+            <div class="collection-card" data-collection="relaxation">
+                <div class="card-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <h2>Relaxation Sounds</h2>
+                <p>Nature sounds, white noise, and ambient environments for relaxation and focus.</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-file-audio"></i> 8 tracks</span>
+                    <span><i class="fas fa-clock"></i> ~45 min</span>
+                </div>
+                <a href="loading.html?redirect=relaxation.html" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> Open Collection
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="music">
+                <div class="card-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h2>Background Music</h2>
+                <p>Instrumental and ambient music tracks for work, study, or creative sessions.</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-file-audio"></i> 6 tracks</span>
+                    <span><i class="fas fa-clock"></i> ~60 min</span>
+                </div>
+                <a href="loading.html?redirect=music.html" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> Open Collection
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="meditation">
+                <div class="card-icon">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h2>Meditation & Focus</h2>
+                <p>Guided meditations, binaural beats, and focus-enhancing audio tracks.</p>
+                <div class="card-meta">
+                    <span><i class="fas fa-file-audio"></i> 5 tracks</span>
+                    <span><i class="fas fa-clock"></i> ~40 min</span>
+                </div>
+                <a href="loading.html?redirect=meditation.html" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> Open Collection
+                </a>
+            </div>
+        </main>
+
+        <div class="info-box">
+            <h3><i class="fas fa-lightbulb"></i> Memory Management</h3>
+            <p>Each collection loads in its own page to ensure optimal memory usage. When you navigate between collections, the previous audio is completely unloaded from memory.</p>
+            <div class="memory-status" id="memoryStatus">
+                <i class="fas fa-memory"></i>
+                <span>Memory usage: Normal</span>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <p>Audio Collections &copy; 2023 | Designed for memory-efficient audio playback</p>
+            <p class="footer-note"><i class="fas fa-exclamation-triangle"></i> Recommended browser: Chrome, Firefox, or Edge (latest versions)</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Loading Collection...</h3>
+            <p>Preparing audio players and memory optimization</p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Add loading screen to collection links
+        document.addEventListener('DOMContentLoaded', function() {
+            const collectionLinks = document.querySelectorAll('.collection-card a');
+            
+            collectionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    // Show loading screen
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // Navigate after a brief delay to show loading screen
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
+            
+            // Check memory API if available
+            if (performance && performance.memory) {
+                const usedMemory = performance.memory.usedJSHeapSize;
+                const totalMemory = performance.memory.totalJSHeapSize;
+                const memoryPercent = (usedMemory / totalMemory * 100).toFixed(1);
+                
+                const memoryStatus = document.getElementById('memoryStatus');
+                if (memoryPercent > 80) {
+                    memoryStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Memory usage: High (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-high');
+                } else if (memoryPercent > 60) {
+                    memoryStatus.innerHTML = '<i class="fas fa-info-circle"></i> <span>Memory usage: Moderate (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-moderate');
+                } else {
+                    memoryStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Memory usage: Normal (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-normal');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
