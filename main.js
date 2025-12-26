@@ -1,5 +1,122 @@
 // Main JavaScript for audio functionality and memory management
 
+// ===== THEME MANAGEMENT =====
+const ThemeManager = {
+    // Initialize theme from localStorage or system preference
+    init() {
+        this.loadTheme();
+        this.setupThemeToggle();
+        this.setupSystemThemeListener();
+    },
+    
+    // Load saved theme or detect system preference
+    loadTheme() {
+        const savedTheme = localStorage.getItem('audio-theme');
+        
+        if (savedTheme) {
+            this.setTheme(savedTheme);
+        } else {
+            // Check system preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.setTheme(prefersDark ? 'dark' : 'light');
+            localStorage.setItem('audio-theme', prefersDark ? 'dark' : 'light');
+        }
+    },
+    
+    // Set theme
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('audio-theme', theme);
+        this.updateThemeStatus();
+        this.updateFavicon(theme);
+        this.updateMetaThemeColor(theme);
+    },
+    
+    // Toggle between light and dark
+    toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+        
+        // Add animation class for transition
+        document.body.classList.add('theme-transitioning');
+        setTimeout(() => {
+            document.body.classList.remove('theme-transitioning');
+        }, 300);
+    },
+    
+    // Setup theme toggle button
+    setupThemeToggle() {
+        const toggleBtn = document.getElementById('themeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                this.toggleTheme();
+                
+                // Add click animation
+                toggleBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    toggleBtn.style.transform = '';
+                }, 150);
+            });
+        }
+        
+        // Also allow keyboard control
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 't') {
+                this.toggleTheme();
+            }
+        });
+    },
+    
+    // Listen for system theme changes
+    setupSystemThemeListener() {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Only follow system theme if user hasn't made a choice
+        mediaQuery.addEventListener('change', (e) => {
+            const savedTheme = localStorage.getItem('audio-theme');
+            if (!savedTheme) {
+                this.setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    },
+    
+    // Update theme status text
+    updateThemeStatus() {
+        const themeStatus = document.getElementById('themeStatus');
+        if (themeStatus) {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            themeStatus.textContent = currentTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+        }
+    },
+    
+    // Update favicon based on theme (optional)
+    updateFavicon(theme) {
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (favicon) {
+            favicon.href = theme === 'dark' ? 'favicon-dark.ico' : 'favicon.ico';
+        }
+    },
+    
+    // Update meta theme color for mobile browsers
+    updateMetaThemeColor(theme) {
+        let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        
+        if (!metaThemeColor) {
+            metaThemeColor = document.createElement('meta');
+            metaThemeColor.name = 'theme-color';
+            document.head.appendChild(metaThemeColor);
+        }
+        
+        metaThemeColor.content = theme === 'dark' ? '#1a202c' : '#4361ee';
+    },
+    
+    // Get current theme
+    getCurrentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+};
+
 // Global state
 const AudioManager = {
     currentPlayers: new Map(), // Track all active audio elements
@@ -274,6 +391,9 @@ const AudioManager = {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    
+    ThemeManager.init();
+    
     // Initialize audio players if we're on an audio page
     if (document.querySelector('.audio-player')) {
         AudioManager.initAudioPlayers();
