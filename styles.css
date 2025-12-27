@@ -757,9 +757,7 @@ body.lowercase-mode .case {
     }
     
     .player-header {
-        flex-direction: column;
         align-items: center;
-        gap: 10px;
     }
     
     .player-controls {
