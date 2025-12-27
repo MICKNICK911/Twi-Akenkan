@@ -249,7 +249,7 @@ body {
     border-radius: var(--border-radius);
     padding: 25px;
     box-shadow: var(--card-shadow);
-    border: 2px solid var(--border-color);
+    border: 3px solid var(--border-color);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -259,7 +259,7 @@ body {
 .collection-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    border-color: var(--accent-color);
+    border-color: var(--secondary-color);
 }
 
 .card-icon {
@@ -306,7 +306,7 @@ body {
 .btn {
     display: inline-block;
     padding: 12px 24px;
-    border-radius: 50px;
+    border-radius: 5px;
     text-decoration: none;
     font-weight: 600;
     text-align: center;
@@ -317,8 +317,14 @@ body {
 }
 
 .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     color: white;
+    height: 25vh;
+    font-size: 1rem;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .btn-primary:hover {
@@ -328,6 +334,13 @@ body {
 
 [data-theme="dark"] .btn-primary:hover {
     box-shadow: 0 5px 20px rgba(90, 125, 255, 0.5);
+}
+
+.topic-des {
+    font-size: 1rem;
+    font-weight: lighter;
+    color: yellow;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .btn-secondary {
@@ -413,13 +426,15 @@ body {
 }
 
 .audio-player-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
     margin-bottom: 30px;
 }
 
 .audio-player {
     background: var(--bg-card);
     border-radius: var(--border-radius);
-    padding: 20px;
     box-shadow: var(--card-shadow);
     margin-bottom: 20px;
     border: 1px solid var(--border-color);
@@ -440,13 +455,13 @@ body {
 
 .player-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.player-header h3 {
-    font-size: 1.2rem;
+.player-header h1 {
+    font-size: 5rem;
     color: var(--text-primary);
 }
 
@@ -467,7 +482,10 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+    padding: 15px;
+    border-radius: 0 0 10px 10px;
     margin-top: 15px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
 }
 
 .play-btn {
