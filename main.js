@@ -67,18 +67,12 @@ const CaseManager = {
         // });
         
         // Example: Add .case class to all track titles (optional)
-        document.querySelectorAll('.player-header h3').forEach(el => {
+        document.querySelectorAll('.player-header h1').forEach(el => {
             if (!el.classList.contains('case')) {
                 el.classList.add('case');
             }
         });
         
-        // Example: Add .case class to all collection card titles (optional)
-        document.querySelectorAll('.collection-card h2').forEach(el => {
-            if (!el.classList.contains('case')) {
-                el.classList.add('case');
-            }
-        });
     },
     
     // Toggle between uppercase and lowercase
