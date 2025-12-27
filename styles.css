@@ -441,6 +441,8 @@ body {
     border: 1px solid var(--border-color);
 }
 
+.
+
 .audio-player:hover {
     border-color: var(--accent-color);
 }
@@ -459,6 +461,14 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
+}
+
+.player-header.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    background-color: red;
 }
 
 .player-header h1 {
