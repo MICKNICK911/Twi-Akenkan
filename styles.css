@@ -125,7 +125,7 @@ body {
     right: 30px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     z-index: 100;
 }
 
@@ -646,6 +646,75 @@ body {
     margin: 0 auto 20px;
 }
 
+/* Case Toggle Button */
+.case-toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.case-toggle {
+    width: 50px;
+    height: 50px;
+    background: var(--bg-card);
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.case-toggle:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.case-toggle.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.case-toggle-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Case toggle states */
+.case-toggle .lowercase-text {
+    display: block;
+}
+
+.case-toggle .uppercase-text {
+    display: none;
+}
+
+.case-toggle.active .lowercase-text {
+    display: none;
+}
+
+.case-toggle.active .uppercase-text {
+    display: block;
+}
+
+/* Text transformation for elements with .case class */
+body.uppercase-mode .case {
+    text-transform: uppercase !important;
+}
+
+body.lowercase-mode .case {
+    text-transform: lowercase !important;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -699,6 +768,35 @@ body {
     .audio-info {
         flex-wrap: wrap;
     }
+    
+    .theme-toggle-container {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .main-header {
+        padding-right: 30px;
+        padding-top: 80px; /* More space for stacked toggles */
+    }
+    
+    .audio-header {
+        padding-top: 80px;
+    }
+    
+    .case-toggle {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+    
+    .case-toggle-label {
+        font-size: 0.7rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -733,6 +831,15 @@ body {
     [data-theme="dark"] .toggle-track {
         transform: translateX(25px);
     }
+    
+    .theme-toggle-container {
+        gap: 8px;
+    }
+    
+    .case-toggle {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 /* Accessibility: Focus styles */
@@ -742,6 +849,27 @@ body {
 .progress-bar:focus {
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
+}
+
+/* Keyboard shortcut hint */
+.case-toggle .keyboard-hint {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.case-toggle:hover .keyboard-hint {
+    opacity: 1;
 }
 
 /* Print styles */

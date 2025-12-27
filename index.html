@@ -15,15 +15,28 @@
                 <h1>Audio Collections</h1>
             </div>
             
-            <!-- Theme toggle -->
+            <!-- Theme and Case Toggles Container -->
+    <div class="theme-toggle-container">
+        <!-- Case Toggle Button -->
+        <div class="case-toggle-container">
+            <button id="caseToggle" class="case-toggle" aria-label="Toggle text case" title="Toggle uppercase/lowercase (Alt+C)">
+                <span class="lowercase-text">Aa</span>
+                <span class="uppercase-text">AA</span>
+                <span class="keyboard-hint">Alt+C</span>
+            </button>
+            <span class="case-toggle-label" id="caseStatus">Aa</span>
+        </div>
+        
+        <!-- Theme Toggle Button -->
         <div class="theme-toggle-container">
-            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode (Alt+T)">
                 <i class="fas fa-moon"></i>
                 <i class="fas fa-sun"></i>
                 <span class="toggle-track"></span>
             </button>
             <span id="themeStatus">Light Mode</span>
         </div>
+    </div>
             
             <p class="subtitle">Memory-optimized audio player system</p>
         </header>

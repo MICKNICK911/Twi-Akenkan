@@ -1,5 +1,287 @@
 // Main JavaScript for audio functionality and memory management
 
+// ===== CASE TOGGLE MANAGER =====
+const CaseManager = {
+    currentMode: 'lowercase', // 'lowercase' or 'uppercase'
+    isActive: false,
+    
+    // Initialize case toggle
+    init() {
+        this.loadCasePreference();
+        this.setupCaseToggle();
+        this.setupCaseElements();
+        this.setupKeyboardShortcut();
+    },
+    
+    // Load saved case preference
+    loadCasePreference() {
+        const savedCaseMode = localStorage.getItem('audio-case-mode');
+        if (savedCaseMode) {
+            this.currentMode = savedCaseMode;
+            this.updateCaseMode(savedCaseMode);
+        }
+    },
+    
+    // Setup case toggle button
+    setupCaseToggle() {
+        const caseToggle = document.getElementById('caseToggle');
+        const caseStatus = document.getElementById('caseStatus');
+        
+        if (caseToggle) {
+            // Set initial state
+            this.updateToggleUI();
+            
+            // Add click event
+            caseToggle.addEventListener('click', () => {
+                this.toggleCaseMode();
+                
+                // Add click animation
+                caseToggle.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    caseToggle.style.transform = '';
+                }, 150);
+            });
+            
+            // Add focus styles for accessibility
+            caseToggle.addEventListener('focus', () => {
+                caseToggle.style.outline = `2px solid var(--accent-color)`;
+                caseToggle.style.outlineOffset = '2px';
+            });
+            
+            caseToggle.addEventListener('blur', () => {
+                caseToggle.style.outline = 'none';
+            });
+        }
+    },
+    
+    // Setup elements with .case class
+    setupCaseElements() {
+        // Add .case class to some elements automatically if not present
+        // You can also manually add .case class to any element in your HTML
+        
+        // Example: Add .case class to all h1, h2, h3 elements (optional)
+        // document.querySelectorAll('h1, h2, h3').forEach(el => {
+        //     if (!el.classList.contains('case')) {
+        //         el.classList.add('case');
+        //     }
+        // });
+        
+        // Example: Add .case class to all track titles (optional)
+        document.querySelectorAll('.player-header h3').forEach(el => {
+            if (!el.classList.contains('case')) {
+                el.classList.add('case');
+            }
+        });
+        
+        // Example: Add .case class to all collection card titles (optional)
+        document.querySelectorAll('.collection-card h2').forEach(el => {
+            if (!el.classList.contains('case')) {
+                el.classList.add('case');
+            }
+        });
+    },
+    
+    // Toggle between uppercase and lowercase
+    toggleCaseMode() {
+        this.currentMode = this.currentMode === 'lowercase' ? 'uppercase' : 'lowercase';
+        this.updateCaseMode(this.currentMode);
+        this.saveCasePreference();
+        
+        // Add visual feedback
+        this.showCaseChangeNotification();
+    },
+    
+    // Update case mode
+    updateCaseMode(mode) {
+        // Remove existing case classes
+        document.body.classList.remove('uppercase-mode', 'lowercase-mode');
+        
+        // Add new case class
+        document.body.classList.add(`${mode}-mode`);
+        
+        // Update UI
+        this.updateToggleUI();
+        
+        // Dispatch custom event for any additional handling
+        document.dispatchEvent(new CustomEvent('caseModeChanged', {
+            detail: { mode }
+        }));
+    },
+    
+    // Update toggle button UI
+    updateToggleUI() {
+        const caseToggle = document.getElementById('caseToggle');
+        const caseStatus = document.getElementById('caseStatus');
+        
+        if (caseToggle) {
+            if (this.currentMode === 'uppercase') {
+                caseToggle.classList.add('active');
+                if (caseStatus) caseStatus.textContent = 'AA';
+            } else {
+                caseToggle.classList.remove('active');
+                if (caseStatus) caseStatus.textContent = 'Aa';
+            }
+        }
+    },
+    
+    // Save preference to localStorage
+    saveCasePreference() {
+        localStorage.setItem('audio-case-mode', this.currentMode);
+    },
+    
+    // Setup keyboard shortcut (Alt + C)
+    setupKeyboardShortcut() {
+        document.addEventListener('keydown', (e) => {
+            // Alt + C toggles case mode
+            if (e.altKey && e.key === 'c') {
+                e.preventDefault();
+                this.toggleCaseMode();
+                
+                // Visual feedback for keyboard shortcut
+                this.showKeyboardShortcutFeedback();
+            }
+            
+            // Alt + Shift + C resets to lowercase
+            if (e.altKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                this.currentMode = 'lowercase';
+                this.updateCaseMode('lowercase');
+                this.saveCasePreference();
+                this.showResetNotification();
+            }
+        });
+    },
+    
+    // Show notification when case mode changes
+    showCaseChangeNotification() {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'case-notification';
+        notification.innerHTML = `
+            <i class="fas fa-font"></i>
+            <span>Text case changed to ${this.currentMode === 'uppercase' ? 'UPPERCASE' : 'lowercase'}</span>
+        `;
+        
+        // Style the notification
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            border-left: 4px solid var(--accent-color);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 1.7s;
+            font-weight: 500;
+        `;
+        
+        // Add animation keyframes
+        if (!document.querySelector('#caseNotificationStyles')) {
+            const style = document.createElement('style');
+            style.id = 'caseNotificationStyles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes fadeOut {
+                    from {
+                        opacity: 1;
+                    }
+                    to {
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after animation
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 2000);
+    },
+    
+    // Show keyboard shortcut feedback
+    showKeyboardShortcutFeedback() {
+        const caseToggle = document.getElementById('caseToggle');
+        if (caseToggle) {
+            caseToggle.style.transform = 'scale(1.1)';
+            caseToggle.style.boxShadow = '0 0 0 3px var(--accent-color)';
+            
+            setTimeout(() => {
+                caseToggle.style.transform = '';
+                caseToggle.style.boxShadow = '';
+            }, 300);
+        }
+    },
+    
+    // Show reset notification
+    showResetNotification() {
+        const notification = document.createElement('div');
+        notification.className = 'case-notification';
+        notification.innerHTML = `
+            <i class="fas fa-redo"></i>
+            <span>Text case reset to lowercase</span>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            border-left: 4px solid var(--success-color);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 1.7s;
+            font-weight: 500;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 2000);
+    },
+    
+    // Get current case mode
+    getCurrentMode() {
+        return this.currentMode;
+    },
+    
+    // Force update all .case elements (useful for dynamic content)
+    updateAllCaseElements() {
+        document.querySelectorAll('.case').forEach(element => {
+            // This will automatically apply based on CSS text-transform
+            // No need to manually change text content
+        });
+    }
+};
+
 // ===== THEME MANAGEMENT =====
 const ThemeManager = {
     // Initialize theme from localStorage or system preference
@@ -393,6 +675,7 @@ const AudioManager = {
 document.addEventListener('DOMContentLoaded', () => {
     
     ThemeManager.init();
+    CaseManager.init();
     
     // Initialize audio players if we're on an audio page
     if (document.querySelector('.audio-player')) {
