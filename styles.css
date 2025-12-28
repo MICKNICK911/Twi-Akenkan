@@ -854,6 +854,20 @@ body.lowercase-mode .case {
     .case-toggle-label {
         font-size: 0.7rem;
     }
+    
+    .btn-multi {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    /* font-weight: bold; */
+}
+
+    .btn-major {
+    width: 70px;
+    height: 70px;
+    font-size: 3rem;
+}
+
 }
 
 @media (max-width: 480px) {
