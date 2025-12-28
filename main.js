@@ -408,6 +408,7 @@ const AudioManager = {
         audioPlayers.forEach((player, index) => {
             const audioElement = player.querySelector('audio');
             const playBtn = player.querySelector('.play-btn');
+            const playBtnM = player.querySelector('.btn-multi');
             const progressBar = player.querySelector('.progress-bar');
             const progress = player.querySelector('.progress');
             const currentTimeEl = player.querySelector('.current-time');
@@ -434,7 +435,7 @@ const AudioManager = {
             // Play/Pause button
             if (playBtn) {
                 playBtn.addEventListener('click', () => {
-                    this.togglePlay(audioElement, playBtn, player);
+                    this.togglePlay(audioElement, playBtn, player, playBtnM);
                 });
             }
             
@@ -513,7 +514,7 @@ const AudioManager = {
     },
     
     // Toggle play/pause for a specific audio element
-    togglePlay(audioElement, playBtn, playerElement) {
+    togglePlay(audioElement, playBtn, playerElement, playBtnM) {
         // Pause all other audio players
         this.pauseAllAudioExcept(audioElement);
         
@@ -522,7 +523,10 @@ const AudioManager = {
                 .then(() => {
                     if (playBtn) {
                         playBtn.classList.add('playing');
+
+                        if (!playBtnM) {
                         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        }
                     }
                     if (playerElement) {
                         playerElement.classList.add('playing');
@@ -536,7 +540,9 @@ const AudioManager = {
             audioElement.pause();
             if (playBtn) {
                 playBtn.classList.remove('playing');
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                if (!playBtnM) {
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        }
             }
             if (playerElement) {
                 playerElement.classList.remove('playing');
@@ -557,7 +563,9 @@ const AudioManager = {
                     const playBtn = playerElement.querySelector('.play-btn');
                     if (playBtn) {
                         playBtn.classList.remove('playing');
+                        if (!playBtnM) {
                         playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        }
                     }
                 }
             }
@@ -577,7 +585,10 @@ const AudioManager = {
                     const playBtn = playerElement.querySelector('.play-btn');
                     if (playBtn) {
                         playBtn.classList.remove('playing');
+
+                        if (!playBtnM) {
                         playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        }
                     }
                 }
             }
