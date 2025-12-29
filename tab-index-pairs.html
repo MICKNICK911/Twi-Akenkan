@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Collections - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-headphones"></i>
+                <h1>Audio Collections</h1>
+            </div>
+            
+            <!-- Theme and Case Toggles Container -->
+    <div class="theme-toggle-container" style="position: absolute; top: 30px; right: 30px">
+        <!-- Case Toggle Button -->
+        <div class="case-toggle-container">
+            <button id="caseToggle" class="case-toggle" aria-label="Toggle text case" title="Toggle uppercase/lowercase (Alt+C)">
+                <span class="lowercase-text">Aa</span>
+                <span class="uppercase-text">AA</span>
+               <!--<span class="keyboard-hint">Alt+C</span>-->
+            </button>
+            <!--<span class="case-toggle-label" id="caseStatus">Aa</span>-->
+        </div>
+        
+        <!-- Theme Toggle Button -->
+        <div class="theme-toggle-container">
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode (Alt+T)">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+                <span class="toggle-track"></span>
+            </button>
+            <!--<span id="themeStatus">Light Mode</span>-->
+        </div>
+
+        <a href="index.html" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Home
+        </a>
+    </div>
+            
+            <p class="subtitle">Memory-optimized audio player system</p>
+        </header>
+
+        <main class="collection-grid">
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-a.html" class="btn btn-primary">
+                    <h1 class="case tab-case">a<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-e.html" class="btn btn-primary">
+                    <h1 class="case tab-case">e<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-i.html" class="btn btn-primary">
+                    <h1 class="case tab-case">i<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-1.html" class="btn btn-primary">
+                    <h1 class="case tab-case">o<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-1.html" class="btn btn-primary">
+                    <h1 class="case tab-case">u<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-1.html" class="btn btn-primary">
+                    <h1 class="case tab-case">ɔ<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+            <div class="collection-card" data-collection="relaxation">
+                <a href="lesson-tab-1.html" class="btn btn-primary">
+                    <h1 class="case tab-case">ɛ<br><span class="tab-des">a + Consonants</span></h1>
+                </a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Loading Collection...</h3>
+            <p>Preparing audio players and memory optimization</p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Add loading screen to collection links
+        document.addEventListener('DOMContentLoaded', function() {
+            const collectionLinks = document.querySelectorAll('.collection-card a');
+            
+            collectionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    // Show loading screen
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    loadingOverlay.style.display = 'flex';
+                    
+                    // Navigate after a brief delay to show loading screen
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
+            
+            // Check memory API if available
+            if (performance && performance.memory) {
+                const usedMemory = performance.memory.usedJSHeapSize;
+                const totalMemory = performance.memory.totalJSHeapSize;
+                const memoryPercent = (usedMemory / totalMemory * 100).toFixed(1);
+                
+                const memoryStatus = document.getElementById('memoryStatus');
+                if (memoryPercent > 80) {
+                    memoryStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Memory usage: High (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-high');
+                } else if (memoryPercent > 60) {
+                    memoryStatus.innerHTML = '<i class="fas fa-info-circle"></i> <span>Memory usage: Moderate (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-moderate');
+                } else {
+                    memoryStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Memory usage: Normal (' + memoryPercent + '%)</span>';
+                    memoryStatus.classList.add('memory-normal');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

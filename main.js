@@ -486,7 +486,10 @@ const AudioManager = {
             audioElement.addEventListener('ended', () => {
                 if (playBtn) {
                     playBtn.classList.remove('playing');
-                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+
+                    if (!playBtnM) {
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        }
                 }
                 player.classList.remove('playing');
             });
