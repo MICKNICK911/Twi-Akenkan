@@ -4,145 +4,325 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghanaian Twi Lessons</title>
-
-    <link rel="icon" type="image/png" sizes="32x32" href="icon/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon/android-chrome-512x512.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
-    <link rel="manifest" href="icon/site.webmanifest">
-
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type=image/png href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .splash-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .logo-container {
+            margin-bottom: 40px;
+        }
+        
+        .app-logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 24px;
+            object-fit: contain;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .app-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .app-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.85;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+        
+        .instruction-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 0 0 40px 0;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        
+        .instruction-icon {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #60a5fa;
+        }
+        
+        .instruction-text {
+            font-size: 1.5rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .instruction-detail {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .loading-section {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            width: 0%;
+            animation: loading 5s linear forwards;
+        }
+        
+        .progress-text {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+        
+        .skip-hint {
+            position: absolute;
+            bottom: 25px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            max-width: 500px;
+            padding: 0 20px;
+        }
+        
+        /* Animations */
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .fade-in-delay {
+            animation: fadeIn 0.8s ease-out 0.3s both;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-title {
+                font-size: 2.2rem;
+            }
+            
+            .app-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .instruction-text {
+                font-size: 1.3rem;
+            }
+            
+            .instruction-box {
+                padding: 24px;
+                margin: 0 0 30px 0;
+            }
+            
+            .app-logo {
+                width: 150px;
+                height: 150px;
+                border-radius: 20px;
+                margin-bottom: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .app-title {
+                font-size: 1.9rem;
+            }
+            
+            .instruction-text {
+                font-size: 1.2rem;
+            }
+            
+            .instruction-box {
+                padding: 20px;
+                margin: 0 0 25px 0;
+            }
+            
+            .app-logo {
+                width: 130px;
+                height: 130px;
+                border-radius: 18px;
+                margin-bottom: 20px;
+            }
+            
+            .skip-hint {
+                font-size: 0.85rem;
+                bottom: 20px;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="main-header">
-            <div class="logo">
-                <i class="fas fa-headphones"></i>
-                <h1>Ghanaian Twi - Reading Lessons</h1>
-            </div>
-            
-            <!-- Theme and Case Toggles Container -->
-    <div class="theme-toggle-container" style="position: absolute; top: 30px; right: 30px">
-        <!-- Case Toggle Button -->
-        <div class="case-toggle-container">
-            <button id="caseToggle" class="case-toggle" aria-label="Toggle text case" title="Toggle uppercase/lowercase (Alt+C)">
-                <span class="lowercase-text">Aa</span>
-                <span class="uppercase-text">AA</span>
-               <!--<span class="keyboard-hint">Alt+C</span>-->
-            </button>
-            <!--<span class="case-toggle-label" id="caseStatus">Aa</span>-->
+    <div class="splash-container">
+        <!-- Logo Section -->
+        <div class="logo-container fade-in">
+            <img src="icon/android-chrome-512x512.png" alt="Ghanaian Twi Lessons Logo" class="app-logo">
+            <h1 class="app-title">Ghanaian Twi Lessons</h1>
+            <div class="app-subtitle">Master Pronunciation with Interactive Audio</div>
         </div>
         
-        <!-- Theme Toggle Button -->
-        <div class="theme-toggle-container">
-            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode (Alt+T)">
-                <i class="fas fa-moon"></i>
-                <i class="fas fa-sun"></i>
-                <span class="toggle-track"></span>
-            </button>
-            <!--<span id="themeStatus">Light Mode</span>-->
+        <!-- Instruction Section -->
+        <div class="instruction-box fade-in-delay">
+            <div class="instruction-icon">
+                <i class="fas fa-headphones"></i>
+            </div>
+            <div class="instruction-text">
+                Tap on play button or text button to listen to the sound
+            </div>
+            <div class="instruction-detail">
+                Interactive audio lessons designed to help you learn Twi pronunciation effectively
+            </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div class="loading-section fade-in-delay">
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progressText">
+                Loading application... <span id="counter">5</span>s
+            </div>
         </div>
     </div>
-            
-            <p class="subtitle">Learn To Read Ghanaian Twi Language At Your Own Pace.</p>
-        </header>
-
-        <main class="collection-grid">
-            <div class="collection-card" data-collection="relaxation">
-                <a href="lesson-1.html" class="btn btn-primary">
-                    <h1>Ghanaian Twi Alphabets<br><span class="topic-des">Twi Nkyerɛwdeɛ</span></h1>
-                </a>
-            </div>
-
-            <div class="collection-card" data-collection="relaxation">
-                <a href="lesson-2.html" class="btn btn-primary">
-                    <h1>Consonants<br><span class="topic-des">Anum Nnyegyeɛ</span></h1>
-                </a>
-            </div>
-
-            <div class="collection-card" data-collection="relaxation">
-                <a href="lesson-3.html" class="btn btn-primary">
-                    <h1>Vowels<br><span class="topic-des">Ano Nnyegyeɛ</span></h1>
-                </a>
-            </div>
-
-            <div class="collection-card" data-collection="relaxation">
-                <a href="tab-index-pairs.html" class="btn btn-primary">
-                    <h1>Vowel - Consonant Pairs<br><span class="topic-des">Ano ne Anum Nnyegyeɛ</span></h1>
-                </a>
-            </div>
-
-            <div class="collection-card" data-collection="relaxation">
-                <a href="tab-index-digraphs.html" class="btn btn-primary">
-                    <h1>Digraghs<br><span class="topic-des">Anum Nnyegyeɛ Mmienu</span></h1>
-                </a>
-            </div>
-
-        </main>
-            
-        <!--<div class="memory-status" id="memoryStatus">
-            <i class="fas fa-memory"></i>
-            <span>Memory usage: Normal</span>
-        </div>-->
     
+    <!--<div class="skip-hint fade-in-delay" id="skipHint">
+        Tap anywhere or press any key to skip
+    </div>-->
 
-        <footer class="main-footer">
-            <p>Ghanaian Twi Lessons &copy; 2025 | Designed by Micknick911 | +233 545800158 | www.appiahm29@yahoo.com</p>
-            <p class="footer-note"><i class="fas fa-exclamation-triangle"></i> Recommended browser: Chrome, Firefox, or Edge (latest versions)</p>
-        </footer>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <h3>Loading Collection...</h3>
-            <p>Preparing audio players and memory optimization</p>
-        </div>
-    </div>
-
-    <script src="main.js"></script>
     <script>
-        // Add loading screen to collection links
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            const collectionLinks = document.querySelectorAll('.collection-card a');
+            const counterElement = document.getElementById('counter');
+            const progressText = document.getElementById('progressText');
+            //const skipHint = document.getElementById('skipHint');
             
-            collectionLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const href = this.getAttribute('href');
+            let countdown = 5;
+            let countdownInterval;
+            
+            // Start the countdown timer
+            function startCountdown() {
+                countdownInterval = setInterval(() => {
+                    countdown--;
+                    counterElement.textContent = countdown;
                     
-                    // Show loading screen
-                    const loadingOverlay = document.getElementById('loadingOverlay');
-                    loadingOverlay.style.display = 'flex';
+                    // Update progress text based on time remaining
+                    if (countdown === 4) {
+                        progressText.textContent = 'Loading audio library... ' + countdown + 's';
+                    } else if (countdown === 3) {
+                        progressText.textContent = 'Preparing lessons... ' + countdown + 's';
+                    } else if (countdown === 2) {
+                        progressText.textContent = 'Almost ready... ' + countdown + 's';
+                        skipHint.textContent = 'Tap anywhere or press any key to launch immediately';
+                    } else if (countdown === 1) {
+                        progressText.textContent = 'Redirecting... ' + countdown + 's';
+                    }
                     
-                    // Navigate after a brief delay to show loading screen
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 300);
-                });
+                    // Redirect when countdown reaches 0
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        redirectToMainApp();
+                    }
+                }, 1000);
+            }
+            
+            // Function to redirect to main app
+            function redirectToMainApp() {
+                // Add a smooth exit transition
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 0.4s ease';
+                
+                setTimeout(() => {
+                    document.body.style.opacity = '0.8';
+                }, 50);
+                
+                setTimeout(() => {
+                    window.location.href = 'main-app.html';
+                }, 400);
+            }
+            
+            // Start the countdown on page load
+            startCountdown();
+            
+            // Allow user to skip the splash screen by tapping
+            document.addEventListener('click', function() {
+                clearInterval(countdownInterval);
+                progressText.textContent = 'Redirecting now...';
+                redirectToMainApp();
             });
             
-            // Check memory API if available
-            if (performance && performance.memory) {
-                const usedMemory = performance.memory.usedJSHeapSize;
-                const totalMemory = performance.memory.totalJSHeapSize;
-                const memoryPercent = (usedMemory / totalMemory * 100).toFixed(1);
-                
-                const memoryStatus = document.getElementById('memoryStatus');
-                if (memoryPercent > 80) {
-                    memoryStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>Memory usage: High (' + memoryPercent + '%)</span>';
-                    memoryStatus.classList.add('memory-high');
-                } else if (memoryPercent > 60) {
-                    memoryStatus.innerHTML = '<i class="fas fa-info-circle"></i> <span>Memory usage: Moderate (' + memoryPercent + '%)</span>';
-                    memoryStatus.classList.add('memory-moderate');
-                } else {
-                    memoryStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Memory usage: Normal (' + memoryPercent + '%)</span>';
-                    memoryStatus.classList.add('memory-normal');
-                }
+            // Also allow skipping with any key press
+            document.addEventListener('keydown', function() {
+                clearInterval(countdownInterval);
+                progressText.textContent = 'Redirecting now...';
+                redirectToMainApp();
+            });
+            
+            // Handle logo loading error
+            const logo = document.querySelector('.app-logo');
+            if (logo) {
+                logo.onerror = function() {
+                    console.error('Logo image not found at icon/image.png');
+                    // Keep the alt text visible if image fails
+                    logo.style.border = '1px solid rgba(255,255,255,0.1)';
+                };
             }
         });
     </script>
